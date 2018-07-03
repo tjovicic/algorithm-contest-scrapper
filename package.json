@@ -4,6 +4,9 @@
     "description": "Scrapper for algorithm contests(Codeforces, HackerRank, COCI, AtCoder...)",
     "version": "0.0.1",
     "publisher": "tjovicic",
+    "repository": {
+        "url": "https://github.com/tjovicic/algorithm-contest-scrapper"
+    },
     "engines": {
         "vscode": "^1.24.0"
     },
