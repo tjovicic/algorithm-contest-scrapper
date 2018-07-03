@@ -1,29 +1,15 @@
 import * as rp from 'request-promise';
 import * as cheerio from 'cheerio';
+import Scrapper from './scrapper';
 
-export default class CodeForcesScrapper {
-    
-    private _contestUrl: string;
-
-    constructor(contestNumber) {
-        this._contestUrl = 'http://codeforces.com/contest/' + contestNumber;
+export default class CodeForcesScrapper extends Scrapper {
+    url(): string {
+        return "http://codeforces.com/contest/";
     }
 
-    getProblems = async() => {
-        const problemNames = await this.getProblemNames();
-        
-        const data = {};
-        for (let i = 0; i < problemNames.length; i++) {
-            const inOut = await this.getProblemInOut(problemNames[i]);
-            data[problemNames[i]] = inOut;
-        }
-
-        return data;
-    }
-
-    getProblemNames = async() => {
+    async getProblemNames(): Promise<string[]> {
         const options = {
-            uri: this._contestUrl,
+            uri: this.contestUrl(),
             transform: function (body) {
                 return cheerio.load(body);
             }
@@ -31,14 +17,13 @@ export default class CodeForcesScrapper {
 
         try {
             const $ = await rp(options);
-            let problems = [];
+            let problems: string[] = [];
             const self = this;
 
             $('table[class="problems"] tbody').children().each(function(index, element) {
                 let text = $(this).text().replace(/\s\s+/g, ' ').trim();
                 if (!text.startsWith('#')) {
                     problems.push(text[0]);
-                    // problems[text[0]] = this.getProblemInOut(text[0]);
                 }
             });
 
@@ -48,9 +33,9 @@ export default class CodeForcesScrapper {
         }
     }
 
-    getProblemInOut = async(problem: string) => {
+    async getProblemInOut(problem: string): Promise<[string, string][]> {
         const options = {
-            uri: this._contestUrl + '/problem/' + problem,
+            uri: this.contestUrl() + '/problem/' + problem,
             transform: function (body) {
                 return cheerio.load(body);
             }
@@ -58,7 +43,7 @@ export default class CodeForcesScrapper {
 
         try {
             const $ = await rp(options);
-            let data = [];
+            let data: [string, string][] = [];
             let input: string;
             let output: string;
             let index = 0;
