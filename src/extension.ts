@@ -1,14 +1,14 @@
 'use strict';
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import { window, workspace, commands, ExtensionContext } from 'vscode';
 import * as path from 'path';
 import * as fse from 'fs-extra';
 import CodeForcesScrapper from './codeforces-scrapper';
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: ExtensionContext) {
 
     // Use the console to output diagnostic information (console.log) and errors (console.error)
     // This line of code will only be executed once when your extension is activated
@@ -17,18 +17,22 @@ export function activate(context: vscode.ExtensionContext) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('extension.algorithm-contest-scrapper', () => {
-        if (vscode.workspace.rootPath === undefined) {
-            vscode.window.showErrorMessage('You have to open a folder first');
+    let disposable = commands.registerCommand('extension.algorithm-contest-scrapper', async () => {
+        if (workspace.rootPath === undefined) {
+            window.showErrorMessage('You have to open a folder first');
             return null;
         }
 
-        vscode.window.showInputBox({placeHolder: 'Enter contest number'}).then(async value => {
+        const result = await window.showQuickPick(['CodeForces'], {
+            placeHolder: 'Choose algorithm contest'
+        });
+
+        window.showInputBox({placeHolder: 'Enter contest number'}).then(async value => {
             const scrapper = new CodeForcesScrapper(value);
             const problems = await scrapper.getProblems();
 
             for (let problem in problems) {
-                const problemPath = path.join(vscode.workspace.rootPath, problem);
+                const problemPath = path.join(workspace.rootPath, problem);
                 createHelperFiles(problemPath);
 
                 let inOuts = problems[problem];
