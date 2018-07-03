@@ -6,7 +6,7 @@ This extension helps in scrapping test cases and problems from popular algorithm
 
 - creates folders and in/out.txt files for every problem in a contest
 
-![Demo](https://github.com/tjovicic/algorithm-contest-scrapper/tree/master/src/demo.gif?raw=true)
+![Demo](https://github.com/tjovicic/algorithm-contest-scrapper/blob/master/docs/demo.gif?raw=true)
 
 ## Usages
 
