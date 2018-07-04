@@ -2,10 +2,14 @@
     "name": "algorithm-contest-scrapper",
     "displayName": "Algorithm contest scrapper",
     "description": "Scrapper for algorithm contests(Codeforces, HackerRank, COCI, AtCoder...)",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "tjovicic",
     "repository": {
+        "type": "git",
         "url": "https://github.com/tjovicic/algorithm-contest-scrapper"
+    },
+    "bugs": {
+        "url": "https://github.com/tjovicic/algorithm-contest-scrapper/issues"
     },
     "engines": {
         "vscode": "^1.24.0"
@@ -32,15 +36,17 @@
         "postinstall": "node ./node_modules/vscode/bin/install",
         "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
+    "dependencies": {
+        "request": "^2.87.0",
+        "request-promise": "^4.2.2",
+        "cheerio": "^1.0.0-rc.2",
+        "fs-extra": "^6.0.1"
+    },
     "devDependencies": {
         "typescript": "^2.6.1",
         "vscode": "^1.1.6",
         "tslint": "^5.8.0",
         "@types/node": "^7.0.43",
-        "@types/mocha": "^2.2.42",
-        "request": "^2.87.0",
-        "request-promise": "^4.2.2",
-        "cheerio": "^1.0.0-rc.2",
-        "fs-extra": "^6.0.1"
+        "@types/mocha": "^2.2.42"
     }
 }
